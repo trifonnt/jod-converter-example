@@ -1,0 +1,18 @@
+jodconverter:
+  local:
+    enabled: true
+#    office-home: C:\Program Files (x86)\OpenOffice 4
+    office-home: /usr/lib/libreoffice ## WORKS on Ubuntu!
+    max-tasks-per-process: 10
+    port-numbers: 8100
+
+    format-options:
+      html:
+        store:
+          TEXT:
+            FilterOptions: EmbedImages
+
+      xhtml:
+        store:
+          TEXT:
+            FilterOptions: EmbedImages
