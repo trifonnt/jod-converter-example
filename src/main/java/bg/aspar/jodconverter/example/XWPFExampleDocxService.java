@@ -7,16 +7,16 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.poi.hwpf.HWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
 
-import bg.aspar.jodconverter.service.VariableReplacerForDoc;
-import bg.aspar.jodconverter.service.impl.VariableReplacerForDocImpl;
+import bg.aspar.jodconverter.service.VariableReplacerForDocx;
+import bg.aspar.jodconverter.service.impl.VariableReplacerForDocxImpl;
 
-public class HWPFExampleDocService {
+public class XWPFExampleDocxService {
 
 	public static void main(String[] args) throws IOException {
-		String inputFileName = "Example-01-template.doc";
-		String resultFileName = "Example-01-result.doc";
+		String inputFileName = "Example-01-template.docx";
+		String resultFileName = "Example-01-result.docx";
 
 		Map<String, String> variables = new HashMap<>();
 		variables.put("${var01}", "MyValue1");
@@ -25,13 +25,13 @@ public class HWPFExampleDocService {
 
 		FileInputStream fileInStream = new FileInputStream(inputFileName);
 
-		VariableReplacerForDoc docConverter = new VariableReplacerForDocImpl();
-		HWPFDocument doc = docConverter.convert(fileInStream, variables);
+		VariableReplacerForDocx variableReplacer = new VariableReplacerForDocxImpl();
+		XWPFDocument doc = variableReplacer.convert(fileInStream, variables);
 
 		saveWord(resultFileName, doc);
 	}
 
-	private static void saveWord(String filePath, HWPFDocument doc) throws FileNotFoundException, IOException {
+	private static void saveWord(String filePath, XWPFDocument doc) throws FileNotFoundException, IOException {
 		try (FileOutputStream out = new FileOutputStream(filePath)) {
 			doc.write(out);
 		}

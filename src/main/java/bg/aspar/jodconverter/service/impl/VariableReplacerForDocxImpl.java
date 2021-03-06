@@ -2,6 +2,7 @@ package bg.aspar.jodconverter.service.impl;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Map;
 
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.springframework.stereotype.Service;
@@ -12,20 +13,23 @@ import bg.aspar.jodconverter.service.VariableReplacerForDocx;
 public class VariableReplacerForDocxImpl implements VariableReplacerForDocx {
 
 	@Override
-	public XWPFDocument convert(InputStream inStream) throws IOException {
+	public XWPFDocument convert(InputStream inStream, Map<String, String> variables) throws IOException {
 		XWPFDocument doc = new XWPFDocument(inStream);
 
-		doc = replaceText(doc, "${var01}", "MyValue1");
+		doc = replaceText(doc, variables);
 
 		return doc;
 	}
 
-	private static XWPFDocument replaceText(XWPFDocument doc, String findText, String replaceText) {
+	private static XWPFDocument replaceText(XWPFDocument doc, Map<String, String> variables) {
 		doc.getParagraphs().forEach(p -> {
 			p.getRuns().forEach(run -> {
 				String text = run.text();
-				if (text.contains(findText)) {
-					run.setText(text.replace(findText, replaceText), 0);
+				for (Map.Entry<String, String> entry : variables.entrySet()) {
+					if (text.contains(entry.getKey())) {
+						text = text.replace(entry.getKey(), entry.getValue());
+						run.setText(text, 0);
+					}
 				}
 			});
 		});
